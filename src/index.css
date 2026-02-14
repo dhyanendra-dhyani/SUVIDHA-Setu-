@@ -478,3 +478,79 @@ body {
   animation: blink 1s steps(1) infinite;
   color: var(--color-accent);
 }
+
+/* ═══════════════════════════════════════════════════════════
+   PERFORMANCE — GPU-accelerated CSS transitions
+   Replaces heavy Framer Motion for common patterns
+   ═══════════════════════════════════════════════════════════ */
+
+/* Fast fade in (replaces motion initial/animate opacity) */
+.fast-fade-in {
+  animation: fastFadeIn 0.2s ease-out both;
+}
+
+@keyframes fastFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Scale-in for modals */
+.fast-scale-in {
+  animation: fastScaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fastScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide from right for panels */
+.fast-slide-left {
+  animation: fastSlideLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fastSlideLeft {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Header bar */
+.header-bar {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Force GPU compositing on animated elements */
+.glass-card,
+.fast-fade-in,
+.fast-scale-in,
+.fast-slide-left {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Print helper */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

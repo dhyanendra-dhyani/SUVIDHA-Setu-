@@ -126,33 +126,41 @@ export async function getStateFromCoords(lat, lng) {
 
 /**
  * Detect the user's state via browser geolocation + reverse geocode.
- * Returns { state, languages[] } or a fallback.
+ * Returns { state, languages[], reason } where reason is:
+ *   'success'     — got location + state
+ *   'denied'      — user blocked permission
+ *   'unavailable' — browser doesn't support geolocation
+ *   'timeout'     — took too long
+ *   'fallback'    — got coords but couldn't resolve state
  */
 export function detectRegion() {
     return new Promise((resolve) => {
+        const fallback = getLanguagesForState('Delhi');
+
         if (!navigator.geolocation) {
-            resolve({ state: null, languages: getLanguagesForState('Delhi') });
+            resolve({ state: null, languages: fallback, reason: 'unavailable' });
             return;
         }
         navigator.geolocation.getCurrentPosition(
             async (pos) => {
                 const state = await getStateFromCoords(pos.coords.latitude, pos.coords.longitude);
                 if (state && STATE_LANGUAGES[state]) {
-                    resolve({ state, languages: getLanguagesForState(state) });
+                    resolve({ state, languages: getLanguagesForState(state), reason: 'success' });
                 } else {
-                    // Try partial match
                     const match = Object.keys(STATE_LANGUAGES).find(
                         s => state && (s.toLowerCase().includes(state.toLowerCase()) || state.toLowerCase().includes(s.toLowerCase()))
                     );
                     resolve({
                         state: match || state || 'Unknown',
                         languages: getLanguagesForState(match || 'Delhi'),
+                        reason: match ? 'success' : 'fallback',
                     });
                 }
             },
-            () => {
-                // Geolocation denied / failed — fallback to Hindi belt
-                resolve({ state: null, languages: getLanguagesForState('Delhi') });
+            (err) => {
+                // 1 = PERMISSION_DENIED, 2 = POSITION_UNAVAILABLE, 3 = TIMEOUT
+                const reason = err.code === 1 ? 'denied' : err.code === 3 ? 'timeout' : 'unavailable';
+                resolve({ state: null, languages: fallback, reason });
             },
             { timeout: 5000, maximumAge: 300000 }
         );
