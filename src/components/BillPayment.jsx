@@ -177,7 +177,7 @@ export default function BillPayment({ lang, isOnline }) {
                         dragConstraints={{ top: -10, bottom: 10 }}
                         className="fixed top-14 left-1/2 -translate-x-1/2 z-50 max-w-lg w-[92%] cursor-grab active:cursor-grabbing"
                     >
-                        <div className="bg-gradient-to-r from-amber-500/90 to-orange-500/90 backdrop-blur-xl rounded-2xl px-5 py-3 shadow-lg shadow-amber-900/30 border border-amber-400/30 flex items-start gap-3">
+                        <div className="bg-gradient-to-r from-amber-500/90 to-orange-500/90 rounded-2xl px-5 py-3 shadow-lg shadow-amber-900/30 border border-amber-400/30 flex items-start gap-3">
                             <span className="text-2xl mt-0.5">🔧</span>
                             <div className="flex-1">
                                 <p className="text-white font-bold text-sm">Prototype Demonstration Mode</p>
@@ -222,8 +222,8 @@ export default function BillPayment({ lang, isOnline }) {
                     {['input', 'bill', 'pay', 'success'].map((s, i) => (
                         <div key={s} className="flex-1 flex items-center gap-2">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${s === step ? 'gradient-primary text-white shadow-lg shadow-indigo-500/30' :
-                                    ['input', 'bill', 'pay', 'success'].indexOf(step) > i ? 'bg-green-500/20 text-green-400' :
-                                        'bg-white/5 text-white/30'
+                                ['input', 'bill', 'pay', 'success'].indexOf(step) > i ? 'bg-green-500/20 text-green-400' :
+                                    'bg-white/5 text-white/30'
                                 }`}>
                                 {['input', 'bill', 'pay', 'success'].indexOf(step) > i ? '✓' : i + 1}
                             </div>

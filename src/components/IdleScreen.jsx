@@ -136,7 +136,7 @@ export default function IdleScreen({ onStart }) {
             {/* ── Top Bar ──────────────────────────────── */}
             <div className="absolute top-0 left-0 right-0 p-6 flex items-center justify-between z-10">
                 <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white/15 backdrop-blur rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 bg-white/15 rounded-xl flex items-center justify-center shadow-lg">
                         <span className="text-white text-xl font-black">S</span>
                     </div>
                     <div>
@@ -154,7 +154,7 @@ export default function IdleScreen({ onStart }) {
 
             {/* ── Government Ad Label ──────────────────── */}
             <div className="absolute top-20 left-0 right-0 z-10 flex justify-center">
-                <div className="flex items-center gap-2 bg-white/10 backdrop-blur rounded-full px-4 py-1.5">
+                <div className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5">
                     <span className="text-xs">🇮🇳</span>
                     <p className="text-white/60 text-xs font-semibold">{ad.source}</p>
                     <span className="text-white/30 text-xs">• Gov. Advertisement</span>
@@ -182,7 +182,7 @@ export default function IdleScreen({ onStart }) {
 
                 {/* Touch to start */}
                 <motion.div className="idle-pulse rounded-full cursor-pointer" whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
-                    <div className="w-44 h-44 rounded-full bg-white/15 backdrop-blur-xl border-2 border-white/30 flex flex-col items-center justify-center shadow-2xl">
+                    <div className="w-44 h-44 rounded-full bg-white/15 border-2 border-white/30 flex flex-col items-center justify-center shadow-2xl">
                         <span className="text-5xl mb-2">👆</span>
                         <p className="text-white font-bold text-sm leading-tight">Touch to Start</p>
                         <p className="text-white/60 font-medium text-xs">शुरू करें</p>
@@ -190,7 +190,7 @@ export default function IdleScreen({ onStart }) {
                 </motion.div>
 
                 {/* Voice hint */}
-                <div className="mt-8 flex items-center gap-3 bg-white/10 backdrop-blur rounded-full px-5 py-2.5">
+                <div className="mt-8 flex items-center gap-3 bg-white/10 rounded-full px-5 py-2.5">
                     <div className="flex items-center gap-0.5 h-5">
                         {[...Array(5)].map((_, i) => (
                             <div key={i} className="voice-bar-sm" style={{ animationDelay: `${i * 0.12}s`, background: 'rgba(255,255,255,0.5)' }} />

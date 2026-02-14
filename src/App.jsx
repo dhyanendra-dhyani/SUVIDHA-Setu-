@@ -154,8 +154,8 @@ function AppContent() {
                 </button>
                 <div className="flex items-center gap-3">
                   <span className={`px-3 py-1 rounded-full text-xs font-bold ${screen === 'citizen-dashboard'
-                      ? 'bg-green-500/15 text-green-400 border border-green-500/20'
-                      : 'bg-blue-500/15 text-blue-400 border border-blue-500/20'
+                    ? 'bg-green-500/15 text-green-400 border border-green-500/20'
+                    : 'bg-blue-500/15 text-blue-400 border border-blue-500/20'
                     }`}>
                     {screen === 'citizen-dashboard' ? '🏛️ Citizen' : '⚡ Guest'}
                   </span>
@@ -212,7 +212,7 @@ function AppContent() {
           {location.pathname !== '/' && (
             <button
               onClick={goHome}
-              className="fixed top-20 left-4 z-50 w-11 h-11 rounded-full bg-white/10 backdrop-blur border border-white/15 flex items-center justify-center text-lg cursor-pointer fast-fade-in"
+              className="fixed top-20 left-4 z-50 w-11 h-11 rounded-full bg-slate-800 border border-white/15 flex items-center justify-center text-lg cursor-pointer fast-fade-in"
               aria-label="Home"
             >
               🏠
@@ -220,7 +220,7 @@ function AppContent() {
           )}
 
           {/* Voice pulse (bottom center) */}
-          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 px-4 py-2 rounded-full bg-white/5 backdrop-blur border border-white/10">
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 px-4 py-2 rounded-full bg-slate-900 border border-white/10">
             {[...Array(5)].map((_, i) => (
               <div key={i} className="voice-bar-sm" style={{ opacity: 0.4 }} />
             ))}
@@ -241,8 +241,8 @@ function AppContent() {
 
       {/* ═══ SOS Modal ═══ */}
       {showSOS && (
-        <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 fast-fade-in" onClick={() => setShowSOS(false)}>
-          <div onClick={(e) => e.stopPropagation()} className="glass-card rounded-3xl p-8 max-w-sm w-full text-center fast-scale-in">
+        <div className="fixed inset-0 z-[60] bg-black/70 flex items-center justify-center p-6 fast-fade-in" onClick={() => setShowSOS(false)}>
+          <div onClick={(e) => e.stopPropagation()} className="bg-slate-800 border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center fast-scale-in">
             <div className="w-20 h-20 rounded-full bg-red-500/15 flex items-center justify-center mx-auto mb-4">
               <span className="text-4xl">🆘</span>
             </div>
@@ -271,7 +271,7 @@ function AppContent() {
 
       {/* ═══ DEV PANEL ═══ */}
       {showDevPanel && (
-        <div className="fixed top-0 right-0 bottom-0 w-80 bg-gray-950/95 backdrop-blur text-gray-100 shadow-2xl z-[70] overflow-y-auto border-l border-white/5 fast-slide-left" style={{ fontSize: '0.8rem' }}>
+        <div className="fixed top-0 right-0 bottom-0 w-80 bg-gray-950 text-gray-100 shadow-2xl z-[70] overflow-y-auto border-l border-white/5 fast-slide-left" style={{ fontSize: '0.8rem' }}>
           <div className="p-4 border-b border-white/5 flex items-center justify-between">
             <h3 className="text-lg font-bold text-white">🛠️ Dev Panel</h3>
             <button onClick={() => setShowDevPanel(false)} className="text-white/40 hover:text-white text-xl cursor-pointer bg-transparent border-0">✕</button>
