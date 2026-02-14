@@ -1,0 +1,480 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Sans+Gurmukhi:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   SUVIDHA Setu — Premium Kiosk Design System v2.0
+   C-DAC SUVIDHA 2026 Hackathon
+   ═══════════════════════════════════════════════════════════ */
+
+@theme {
+  --color-primary: #1E40AF;
+  --color-primary-light: #3B82F6;
+  --color-primary-dark: #1E3A8A;
+  --color-accent: #6366F1;
+  --color-success: #10B981;
+  --color-success-light: #34D399;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FBBF24;
+  --color-danger: #EF4444;
+  --color-surface: #F3F4F6;
+  --color-surface-dark: #E5E7EB;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6B7280;
+  --color-kiosk-bg: #0F172A;
+  --color-card-bg: #FFFFFF;
+  --color-saffron: #FF9933;
+  --color-india-green: #138808;
+  --color-navy: #000080;
+  --color-guest-blue: #2563EB;
+  --color-citizen-green: #059669;
+}
+
+/* ── Base ───────────────────────────────────────────── */
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', 'Inter', 'Noto Sans Devanagari', 'Noto Sans Gurmukhi', system-ui, sans-serif;
+  background: #0F172A;
+  color: #F1F5F9;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Kiosk Touch Targets ───────────────────────────── */
+.kiosk-btn {
+  min-width: 120px;
+  min-height: 120px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: all 0.25s cubic-bezier(.4, 0, .2, 1);
+  user-select: none;
+}
+
+.kiosk-btn:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.7);
+  outline-offset: 3px;
+}
+
+/* ── Microphone Pulse ──────────────────────────────── */
+@keyframes mic-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.55);
+  }
+
+  50% {
+    box-shadow: 0 0 0 28px rgba(99, 102, 241, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+@keyframes mic-pulse-active {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 0 32px rgba(239, 68, 68, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.mic-btn {
+  animation: mic-pulse 2.4s infinite;
+}
+
+.mic-btn.active {
+  animation: mic-pulse-active 1.1s infinite;
+  background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+}
+
+/* ── Idle-screen slow pulse ────────────────────────── */
+@keyframes idle-pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.5);
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
+  }
+}
+
+.idle-pulse {
+  animation: idle-pulse 3s ease-in-out infinite;
+}
+
+/* ── Waveform ──────────────────────────────────────── */
+@keyframes waveform {
+
+  0%,
+  100% {
+    height: 6px;
+  }
+
+  25% {
+    height: 22px;
+  }
+
+  50% {
+    height: 38px;
+  }
+
+  75% {
+    height: 14px;
+  }
+}
+
+.waveform-bar {
+  width: 4px;
+  background: var(--color-accent);
+  border-radius: 4px;
+  animation: waveform 1s ease-in-out infinite;
+}
+
+.waveform-bar:nth-child(2) {
+  animation-delay: .08s;
+}
+
+.waveform-bar:nth-child(3) {
+  animation-delay: .16s;
+}
+
+.waveform-bar:nth-child(4) {
+  animation-delay: .24s;
+}
+
+.waveform-bar:nth-child(5) {
+  animation-delay: .32s;
+}
+
+.waveform-bar:nth-child(6) {
+  animation-delay: .40s;
+}
+
+.waveform-bar:nth-child(7) {
+  animation-delay: .48s;
+}
+
+.waveform-bar:nth-child(8) {
+  animation-delay: .56s;
+}
+
+.waveform-bar:nth-child(9) {
+  animation-delay: .64s;
+}
+
+.waveform-bar:nth-child(10) {
+  animation-delay: .72s;
+}
+
+/* ── Cash slide ────────────────────────────────────── */
+@keyframes cash-slide {
+  0% {
+    transform: translateY(-100px) rotate(2deg);
+    opacity: 0;
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(60px) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.cash-bill {
+  animation: cash-slide 1.5s ease-in-out forwards;
+}
+
+/* ── Success bounce ────────────────────────────────── */
+@keyframes check-bounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  70% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-check {
+  animation: check-bounce .6s ease-out forwards;
+}
+
+/* ── Offline banner slide ──────────────────────────── */
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.offline-banner {
+  animation: slide-down .4s ease-out;
+}
+
+/* ── Floating shimmer ──────────────────────────────── */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #a5b4fc 0%, #e0e7ff 33%, #a5b4fc 66%, #c7d2fe 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Glass card ────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Gradient helpers ──────────────────────────────── */
+.gradient-primary {
+  background: linear-gradient(135deg, #1E40AF, #6366F1);
+}
+
+.gradient-success {
+  background: linear-gradient(135deg, #059669, #10B981);
+}
+
+.gradient-saffron {
+  background: linear-gradient(135deg, #FF9933, #FFB366);
+}
+
+.gradient-guest {
+  background: linear-gradient(135deg, #2563EB, #3B82F6);
+}
+
+.gradient-citizen {
+  background: linear-gradient(135deg, #059669, #34D399);
+}
+
+.gradient-dark {
+  background: linear-gradient(135deg, #0F172A, #1E293B);
+}
+
+.gradient-hero {
+  background: linear-gradient(160deg, #0F172A 0%, #1E3A5F 40%, #1E40AF 100%);
+}
+
+/* ── Numpad ────────────────────────────────────────── */
+.numpad-key {
+  width: 80px;
+  height: 80px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #F1F5F9;
+  cursor: pointer;
+  transition: all .15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.numpad-key:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.06);
+}
+
+.numpad-key:active {
+  transform: scale(0.94);
+}
+
+/* ── Persistent voice waveform bar (bottom center) ── */
+@keyframes pulse-wave-sm {
+
+  0%,
+  100% {
+    height: 4px;
+  }
+
+  50% {
+    height: 16px;
+  }
+}
+
+.voice-bar-sm {
+  width: 3px;
+  border-radius: 3px;
+  background: var(--color-accent);
+  animation: pulse-wave-sm 1.2s ease-in-out infinite;
+}
+
+.voice-bar-sm:nth-child(2) {
+  animation-delay: .1s;
+}
+
+.voice-bar-sm:nth-child(3) {
+  animation-delay: .2s;
+}
+
+.voice-bar-sm:nth-child(4) {
+  animation-delay: .3s;
+}
+
+.voice-bar-sm:nth-child(5) {
+  animation-delay: .4s;
+}
+
+/* ── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Focus ring ────────────────────────────────────── */
+:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.7);
+  outline-offset: 2px;
+}
+
+/* ── Video background helper ───────────────────────── */
+.video-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* ── Prototype badge ───────────────────────────────── */
+.proto-badge {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+  border: 1px dashed rgba(245, 158, 11, 0.5);
+  color: #FBBF24;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ── Print ─────────────────────────────────────────── */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* ── SOS button ring ───────────────────────────────── */
+@keyframes sos-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+
+  70% {
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.sos-btn {
+  animation: sos-ring 2s infinite;
+}
+
+/* ── Typing cursor blink ──────────────────────────── */
+@keyframes blink {
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink::after {
+  content: '|';
+  animation: blink 1s steps(1) infinite;
+  color: var(--color-accent);
+}
