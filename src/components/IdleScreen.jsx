@@ -1,13 +1,11 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * IdleScreen - The "Attraction" Loop
- * Shows government ad videos with overlay.
- * "Touch to Start" button + wake-word detection.
+ * IdleScreen - The "Attraction" Loop v3.0 (Zero Framer-Motion)
+ * Uses CSS transitions for carousel and interactions.
  * ═══════════════════════════════════════════════════════════
  */
 
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
 
 /** Government ad slides with public video URLs */
 const GOV_ADS = [
@@ -95,13 +93,10 @@ export default function IdleScreen({ onStart }) {
     const ad = GOV_ADS[currentSlide];
 
     return (
-        <motion.div
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden cursor-pointer"
-            style={{ background: ad.gradient, transition: 'background 1.5s ease' }}
+        <div
+            className={`fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden cursor-pointer transition-opacity duration-500 ${isWaking ? 'opacity-0' : 'opacity-100'}`}
+            style={{ background: ad.gradient, transition: 'background 1.5s ease', pointerEvents: isWaking ? 'none' : 'auto' }}
             onClick={() => { setIsWaking(true); setTimeout(() => onStart?.(), 300); }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isWaking ? 0 : 1 }}
-            transition={{ duration: 0.5 }}
             role="button"
             aria-label="Touch to start"
         >
@@ -164,13 +159,9 @@ export default function IdleScreen({ onStart }) {
             {/* ── Center Content ───────────────────────── */}
             <div className="relative z-10 flex flex-col items-center text-center px-8 max-w-2xl">
                 {/* Ad content */}
-                <motion.div
+                <div
                     key={currentSlide}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.8 }}
-                    className="mb-12"
+                    className="mb-12 fast-fade-in"
                 >
                     <h2 className="text-5xl md:text-6xl font-black text-white mb-4 leading-tight drop-shadow-lg">
                         {ad.title}
@@ -178,16 +169,19 @@ export default function IdleScreen({ onStart }) {
                     <p className="text-xl text-white/70 font-medium drop-shadow">
                         {ad.subtitle}
                     </p>
-                </motion.div>
+                </div>
 
                 {/* Touch to start */}
-                <motion.div className="idle-pulse rounded-full cursor-pointer" whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
-                    <div className="w-44 h-44 rounded-full bg-white/15 border-2 border-white/30 flex flex-col items-center justify-center shadow-2xl">
+                <div className="idle-pulse rounded-full" style={{ transform: 'scale(1)', transition: 'transform 0.2s' }}>
+                    <button
+                        className="w-44 h-44 rounded-full bg-white/15 border-2 border-white/30 flex flex-col items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+                        style={{ backdropFilter: 'blur(0px)' }} /* Explicitly disabled blur */
+                    >
                         <span className="text-5xl mb-2">👆</span>
                         <p className="text-white font-bold text-sm leading-tight">Touch to Start</p>
                         <p className="text-white/60 font-medium text-xs">शुरू करें</p>
-                    </div>
-                </motion.div>
+                    </button>
+                </div>
 
                 {/* Voice hint */}
                 <div className="mt-8 flex items-center gap-3 bg-white/10 rounded-full px-5 py-2.5">
@@ -210,7 +204,7 @@ export default function IdleScreen({ onStart }) {
                         <button
                             key={i}
                             onClick={(e) => { e.stopPropagation(); setCurrentSlide(i); setVideoLoaded(false); }}
-                            className="h-1.5 rounded-full transition-all duration-500 cursor-pointer border-0 p-0"
+                            className="h-1.5 rounded-full transition-all duration-500 cursor-pointer border-0 p-0 hover:opacity-100"
                             style={{
                                 width: i === currentSlide ? '32px' : '8px',
                                 background: i === currentSlide ? 'white' : 'rgba(255,255,255,0.3)',
@@ -231,6 +225,6 @@ export default function IdleScreen({ onStart }) {
                     C-DAC SUVIDHA 2026 — Empowering Citizens Through Technology
                 </p>
             </div>
-        </motion.div>
+        </div>
     );
 }

@@ -1,12 +1,11 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * VoiceButton — Reusable mic component (dark theme)
- * Supports variable sizes, pulse animation, waveform, label
+ * VoiceButton — Reusable mic component v3.0 (Zero Framer-Motion)
+ * Uses CSS keyframes for pulse and waveform animations.
  * ═══════════════════════════════════════════════════════════
  */
 
 import { useState, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { startSpeechRecognition, isSpeechRecognitionSupported } from '../utils/voiceCommands';
 
 export default function VoiceButton({
@@ -58,12 +57,10 @@ export default function VoiceButton({
 
     return (
         <div className={`flex flex-col items-center gap-2 ${className}`}>
-            <motion.button
-                whileHover={{ scale: 1.06 }}
-                whileTap={{ scale: 0.93 }}
+            <button
                 onClick={isListening ? handleStop : handleStart}
-                className={`mic-btn rounded-full flex items-center justify-center cursor-pointer border-2 transition-all ${isListening ? 'active' : ''
-                    }`}
+                disabled={!supported}
+                className={`rounded-full flex items-center justify-center cursor-pointer border-2 transition-all hover:scale-105 active:scale-95 ${isListening ? 'mic-pulse' : ''}`}
                 style={{
                     width: `${size}px`,
                     height: `${size}px`,
@@ -71,17 +68,24 @@ export default function VoiceButton({
                         ? 'linear-gradient(135deg, #EF4444, #DC2626)'
                         : 'linear-gradient(135deg, rgba(99,102,241,0.25), rgba(99,102,241,0.1))',
                     borderColor: isListening ? 'rgba(239,68,68,0.5)' : 'rgba(99,102,241,0.35)',
-                    backdropFilter: 'blur(12px)',
+                    backdropFilter: 'blur(12px)', // Kept blur here as it's small and circular
                 }}
-                disabled={!supported}
                 aria-label={isListening ? 'Stop listening' : 'Start voice input'}
                 aria-pressed={isListening}
             >
                 {isListening ? (
                     /* Waveform bars */
-                    <div className="flex items-center gap-1" style={{ height: `${iconSize}px` }}>
-                        {[...Array(7)].map((_, i) => (
-                            <div key={i} className="waveform-bar" style={{ background: 'white', width: '3px' }} />
+                    <div className="flex items-center gap-1 h-1/2">
+                        {[...Array(5)].map((_, i) => (
+                            <div
+                                key={i}
+                                className="w-1 bg-white rounded-full animate-pulse"
+                                style={{
+                                    height: `${Math.random() * 60 + 40}%`,
+                                    animationDelay: `${i * 0.1}s`,
+                                    animationDuration: '0.6s'
+                                }}
+                            />
                         ))}
                     </div>
                 ) : (
@@ -92,7 +96,7 @@ export default function VoiceButton({
                         <line x1="12" x2="12" y1="19" y2="22" />
                     </svg>
                 )}
-            </motion.button>
+            </button>
 
             {/* Label */}
             {showLabel && (
@@ -102,18 +106,11 @@ export default function VoiceButton({
             )}
 
             {/* Transcript bubble */}
-            <AnimatePresence>
-                {transcript && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -5, scale: 0.9 }}
-                        className="bg-indigo-600/20 border border-indigo-500/20 rounded-xl px-4 py-2 max-w-xs"
-                    >
-                        <p className="text-indigo-300 text-sm text-center">"{transcript}"</p>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {transcript && (
+                <div className="bg-indigo-600/20 border border-indigo-500/20 rounded-xl px-4 py-2 max-w-xs fast-scale-in origin-top">
+                    <p className="text-indigo-300 text-sm text-center">"{transcript}"</p>
+                </div>
+            )}
         </div>
     );
 }

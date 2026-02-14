@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "framer-motion": "^12.34.0",
     "jspdf": "^4.1.0",
     "localforage": "^1.10.0",
     "qrcode.react": "^4.2.0",

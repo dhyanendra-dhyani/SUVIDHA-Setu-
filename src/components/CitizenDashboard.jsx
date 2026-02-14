@@ -1,20 +1,17 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * CitizenDashboard - Authenticated user's unified dashboard
- * (Screen 4B) Shows: Welcome header, My Bills, My Complaints,
- * Available Services, and profile info.
+ * CitizenDashboard - Authenticated Dashboard v3.0 (Zero Framer-Motion)
+ * Pure CSS animations for tabs and lists.
  * ═══════════════════════════════════════════════════════════
  */
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
 import { t } from '../utils/i18n';
 import { speak } from '../utils/voiceCommands';
 import VoiceButton from './VoiceButton';
 import { processVoiceCommand } from '../utils/voiceCommands';
 
-/** Mock citizen profile data */
 const myBills = [
     { service: 'Electricity', icon: '⚡', id: 'PSEB-123456', amount: 1200, due: '2026-02-28', status: 'due', route: '/bill/electricity' },
     { service: 'Water', icon: '💧', id: 'PHED-789012', amount: 280, due: '2026-03-05', status: 'paid', route: '/bill/water' },
@@ -42,11 +39,6 @@ const statusColors = {
     'in-progress': { bg: 'rgba(245,158,11,0.15)', text: '#FBBF24', label: 'In Progress' },
 };
 
-const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.08, duration: 0.4 } }),
-};
-
 export default function CitizenDashboard({ lang, citizen, onLogout, isOnline }) {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('bills');
@@ -59,20 +51,10 @@ export default function CitizenDashboard({ lang, citizen, onLogout, isOnline }) 
     const initials = citizen?.name?.split(' ').map(w => w[0]).join('') || 'VK';
 
     return (
-        <motion.div
-            className="w-full max-w-4xl mx-auto px-4 py-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-        >
+        <div className="w-full max-w-4xl mx-auto px-4 py-6 fast-fade-in">
             {/* ── Welcome Header ──────────────────────── */}
-            <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass-card rounded-2xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4"
-            >
+            <div className="glass-card rounded-2xl p-6 mb-6 flex flex-wrap items-center justify-between gap-4 fast-slide-left">
                 <div className="flex items-center gap-4">
-                    {/* Avatar */}
                     <div className="w-16 h-16 rounded-full gradient-citizen flex items-center justify-center text-white text-2xl font-black shadow-lg">
                         {initials}
                     </div>
@@ -94,7 +76,7 @@ export default function CitizenDashboard({ lang, citizen, onLogout, isOnline }) 
                         {t(lang, 'logout')}
                     </button>
                 </div>
-            </motion.div>
+            </div>
 
             {/* ── Tab Navigation ──────────────────────── */}
             <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
@@ -107,8 +89,8 @@ export default function CitizenDashboard({ lang, citizen, onLogout, isOnline }) 
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key)}
                         className={`flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm cursor-pointer border transition-all whitespace-nowrap ${activeTab === tab.key
-                                ? 'bg-indigo-600/20 border-indigo-500/40 text-indigo-300'
-                                : 'bg-white/5 border-white/5 text-white/50 hover:bg-white/8 hover:text-white/70'
+                            ? 'bg-indigo-600/20 border-indigo-500/40 text-indigo-300'
+                            : 'bg-white/5 border-white/5 text-white/50 hover:bg-white/8 hover:text-white/70'
                             }`}
                     >
                         <span>{tab.icon}</span> {tab.label}
@@ -116,29 +98,19 @@ export default function CitizenDashboard({ lang, citizen, onLogout, isOnline }) 
                 ))}
             </div>
 
-            <AnimatePresence mode="wait">
-                {/* ── Bills Tab ─────────────────────────── */}
+            {/* ── Content Area ────────────────────────── */}
+            <div className="min-h-[300px]">
+                {/* Bills */}
                 {activeTab === 'bills' && (
-                    <motion.div
-                        key="bills"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="space-y-3"
-                    >
+                    <div className="space-y-3 fast-fade-in">
                         {myBills.map((bill, i) => {
                             const sc = statusColors[bill.status];
                             return (
-                                <motion.button
+                                <button
                                     key={bill.id}
-                                    custom={i}
-                                    variants={fadeUp}
-                                    initial="hidden"
-                                    animate="visible"
-                                    whileHover={{ scale: 1.01, x: 4 }}
-                                    whileTap={{ scale: 0.99 }}
                                     onClick={() => navigate(bill.route)}
-                                    className="w-full glass-card rounded-2xl p-5 flex items-center justify-between gap-4 cursor-pointer border border-transparent hover:border-indigo-500/20 text-left"
+                                    className="w-full glass-card rounded-2xl p-5 flex items-center justify-between gap-4 cursor-pointer border border-transparent hover:border-indigo-500/20 text-left hover:scale-[1.01] transition-transform fast-scale-in"
+                                    style={{ animationDelay: `${i * 0.05}s` }}
                                 >
                                     <div className="flex items-center gap-4">
                                         <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-2xl">
@@ -154,92 +126,59 @@ export default function CitizenDashboard({ lang, citizen, onLogout, isOnline }) 
                                             <p className="text-white font-black text-xl">₹{bill.amount.toLocaleString()}</p>
                                             <p className="text-white/30 text-xs">Due: {bill.due}</p>
                                         </div>
-                                        <span
-                                            className="px-3 py-1 rounded-full text-xs font-bold"
-                                            style={{ background: sc.bg, color: sc.text }}
-                                        >
+                                        <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: sc.bg, color: sc.text }}>
                                             {sc.label}
                                         </span>
                                     </div>
-                                </motion.button>
+                                </button>
                             );
                         })}
-                    </motion.div>
+                    </div>
                 )}
 
-                {/* ── Complaints Tab ────────────────────── */}
+                {/* Complaints */}
                 {activeTab === 'complaints' && (
-                    <motion.div
-                        key="complaints"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="space-y-3"
-                    >
+                    <div className="space-y-3 fast-fade-in">
                         {myComplaints.map((comp, i) => {
                             const sc = statusColors[comp.status];
                             return (
-                                <motion.div
-                                    key={comp.ticketId}
-                                    custom={i}
-                                    variants={fadeUp}
-                                    initial="hidden"
-                                    animate="visible"
-                                    className="glass-card rounded-2xl p-5 flex items-center justify-between"
-                                >
+                                <div key={comp.ticketId} className="glass-card rounded-2xl p-5 flex items-center justify-between fast-scale-in" style={{ animationDelay: `${i * 0.05}s` }}>
                                     <div>
                                         <p className="text-white font-bold">{comp.category}</p>
                                         <p className="text-white/30 text-xs font-mono">{comp.ticketId} · {comp.date}</p>
                                     </div>
-                                    <span
-                                        className="px-3 py-1.5 rounded-full text-xs font-bold"
-                                        style={{ background: sc.bg, color: sc.text }}
-                                    >
+                                    <span className="px-3 py-1.5 rounded-full text-xs font-bold" style={{ background: sc.bg, color: sc.text }}>
                                         {sc.label}
                                     </span>
-                                </motion.div>
+                                </div>
                             );
                         })}
-
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                        <button
                             onClick={() => navigate('/complaint')}
-                            className="w-full py-5 rounded-2xl border-2 border-dashed border-white/10 text-white/40 hover:text-white/60 hover:border-white/20 font-semibold cursor-pointer bg-transparent text-sm"
+                            className="w-full py-5 rounded-2xl border-2 border-dashed border-white/10 text-white/40 hover:text-white/60 hover:border-white/20 font-semibold cursor-pointer bg-transparent text-sm hover:scale-[1.01] transition-transform"
                         >
                             + {lang === 'hi' ? 'नई शिकायत दर्ज करें' : 'File New Complaint'}
-                        </motion.button>
-                    </motion.div>
+                        </button>
+                    </div>
                 )}
 
-                {/* ── Services Tab ──────────────────────── */}
+                {/* Services */}
                 {activeTab === 'services' && (
-                    <motion.div
-                        key="services"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="grid grid-cols-2 md:grid-cols-3 gap-3"
-                    >
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 fast-fade-in">
                         {availableServices.map((svc, i) => (
-                            <motion.button
+                            <button
                                 key={svc.label}
-                                custom={i}
-                                variants={fadeUp}
-                                initial="hidden"
-                                animate="visible"
-                                whileHover={{ scale: 1.04, y: -2 }}
-                                whileTap={{ scale: 0.96 }}
                                 onClick={() => navigate(svc.route)}
-                                className="glass-card rounded-2xl p-5 flex flex-col items-center gap-3 cursor-pointer border border-transparent hover:border-indigo-500/20"
+                                className="glass-card rounded-2xl p-5 flex flex-col items-center gap-3 cursor-pointer border border-transparent hover:border-indigo-500/20 hover:scale-[1.02] transition-transform fast-scale-in"
+                                style={{ animationDelay: `${i * 0.05}s` }}
                             >
                                 <span className="text-3xl">{svc.icon}</span>
                                 <span className="text-white/80 font-semibold text-sm text-center">{svc.label}</span>
-                            </motion.button>
+                            </button>
                         ))}
-                    </motion.div>
+                    </div>
                 )}
-            </AnimatePresence>
-        </motion.div>
+            </div>
+        </div>
     );
 }

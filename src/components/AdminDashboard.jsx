@@ -1,12 +1,11 @@
 /**
  * ═══════════════════════════════════════════════════════════
- * AdminDashboard — Analytics & Management (dark theme)
- * Login → Stats → Charts → Heatmap → Activity Log
+ * AdminDashboard — Zero Framer-Motion
+ * Uses Recharts for visualization and CSS for list animations.
  * ═══════════════════════════════════════════════════════════
  */
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { t } from '../utils/i18n';
 import { adminMockData } from '../utils/mockData';
@@ -31,11 +30,7 @@ export default function AdminDashboard({ lang }) {
     /** Login Screen */
     if (!isLoggedIn) {
         return (
-            <motion.div
-                className="min-h-[calc(100vh-160px)] flex items-center justify-center px-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-            >
+            <div className="min-h-[calc(100vh-160px)] flex items-center justify-center px-4 fast-fade-in">
                 <div className="glass-card rounded-3xl p-8 w-full max-w-md">
                     <div className="text-center mb-6">
                         <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -63,7 +58,7 @@ export default function AdminDashboard({ lang }) {
                         {error && <p className="text-red-400 text-sm text-center">{error}</p>}
                         <button
                             onClick={handleLogin}
-                            className="w-full py-4 rounded-xl gradient-primary text-white font-bold text-lg cursor-pointer border-0"
+                            className="w-full py-4 rounded-xl gradient-primary text-white font-bold text-lg cursor-pointer border-0 hover:scale-[1.02] transition-transform"
                         >
                             {t(lang, 'login')}
                         </button>
@@ -76,7 +71,7 @@ export default function AdminDashboard({ lang }) {
                         </p>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         );
     }
 
@@ -89,11 +84,7 @@ export default function AdminDashboard({ lang }) {
     ];
 
     return (
-        <motion.div
-            className="w-full max-w-6xl mx-auto px-4 py-6 space-y-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
+        <div className="w-full max-w-6xl mx-auto px-4 py-6 space-y-6 fast-fade-in">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-black text-white">📊 {t(lang, 'dashboard')}</h2>
@@ -108,11 +99,10 @@ export default function AdminDashboard({ lang }) {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {stats.map((s, i) => (
-                    <motion.div
+                    <div
                         key={s.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0, transition: { delay: i * 0.1 } }}
-                        className="glass-card rounded-2xl p-5"
+                        className="glass-card rounded-2xl p-5 fast-scale-in"
+                        style={{ animationDelay: `${i * 0.1}s` }}
                     >
                         <div className="flex items-center gap-3 mb-3">
                             <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl" style={{ background: `${s.color}20` }}>
@@ -121,14 +111,14 @@ export default function AdminDashboard({ lang }) {
                         </div>
                         <p className="text-2xl font-black text-white">{s.value}</p>
                         <p className="text-white/40 text-sm font-medium mt-1">{s.label}</p>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
 
             {/* Charts Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Bar Chart */}
-                <div className="glass-card rounded-2xl p-5">
+                <div className="glass-card rounded-2xl p-5 fast-fade-in" style={{ animationDelay: '0.2s' }}>
                     <h3 className="text-white font-bold mb-4">{lang === 'hi' ? 'प्रति घंटा लेनदेन' : 'Hourly Transactions'}</h3>
                     <ResponsiveContainer width="100%" height={250}>
                         <BarChart data={adminMockData.hourlyData}>
@@ -136,6 +126,7 @@ export default function AdminDashboard({ lang }) {
                             <YAxis tick={{ fill: '#6B7280', fontSize: 10 }} axisLine={false} tickLine={false} />
                             <Tooltip
                                 contentStyle={{ background: '#1F2937', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#F3F4F6' }}
+                                cursor={{ fill: 'rgba(255,255,255,0.05)' }}
                             />
                             <Bar dataKey="transactions" fill="#6366F1" radius={[6, 6, 0, 0]} />
                         </BarChart>
@@ -143,7 +134,7 @@ export default function AdminDashboard({ lang }) {
                 </div>
 
                 {/* Pie Chart */}
-                <div className="glass-card rounded-2xl p-5">
+                <div className="glass-card rounded-2xl p-5 fast-fade-in" style={{ animationDelay: '0.3s' }}>
                     <h3 className="text-white font-bold mb-4">{lang === 'hi' ? 'सेवा वितरण' : 'Service Breakdown'}</h3>
                     <ResponsiveContainer width="100%" height={250}>
                         <PieChart>
@@ -168,7 +159,7 @@ export default function AdminDashboard({ lang }) {
             </div>
 
             {/* Heatmap */}
-            <div className="glass-card rounded-2xl p-5">
+            <div className="glass-card rounded-2xl p-5 fast-fade-in" style={{ animationDelay: '0.4s' }}>
                 <h3 className="text-white font-bold mb-4">🗺️ {t(lang, 'complaintHeatmap')}</h3>
                 <div className="relative bg-white/3 rounded-2xl p-4" style={{ minHeight: '300px' }}>
                     <svg viewBox="0 0 500 450" className="w-full h-auto opacity-20">
@@ -200,19 +191,13 @@ export default function AdminDashboard({ lang }) {
                                     boxShadow: `0 0 ${point.count}px rgba(239,68,68,0.4)`,
                                 }}
                             />
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block">
-                                <div className="bg-gray-900 border border-white/10 rounded-lg px-3 py-1.5 text-xs whitespace-nowrap">
-                                    <span className="text-white font-bold">{point.name}</span>
-                                    <span className="text-white/40 ml-1">({point.count})</span>
-                                </div>
-                            </div>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* Activity Log */}
-            <div className="glass-card rounded-2xl p-5">
+            <div className="glass-card rounded-2xl p-5 fast-fade-in" style={{ animationDelay: '0.5s' }}>
                 <h3 className="text-white font-bold mb-4">📋 {t(lang, 'activityLog')}</h3>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -242,6 +227,6 @@ export default function AdminDashboard({ lang }) {
                     </table>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 }

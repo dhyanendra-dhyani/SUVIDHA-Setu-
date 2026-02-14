@@ -536,18 +536,54 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Force GPU compositing on animated elements */
-.glass-card,
+/* GPU hints — only on actually-animated elements */
 .fast-fade-in,
 .fast-scale-in,
 .fast-slide-left {
   will-change: transform, opacity;
-  transform: translateZ(0);
+}
+
+/* ── Prototype Marquee Ticker ──────────────────────── */
+.proto-ticker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  height: 24px;
+  overflow: hidden;
+  background: linear-gradient(90deg, #1E293B, #0F172A);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  display: flex;
+  align-items: center;
+}
+
+.proto-ticker-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: ticker 20s linear infinite;
+  color: rgba(251, 191, 35, 0.7);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* Print helper */
 @media print {
-  .no-print {
+
+  .no-print,
+  .proto-ticker {
     display: none !important;
   }
 }
